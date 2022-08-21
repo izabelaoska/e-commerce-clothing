@@ -3,12 +3,14 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 25px;
+  padding-left: 70px;
+  padding-right: 70px;
 
   .logo-container {
+    align-items: center;
+    display: flex;
     height: 100%;
     width: 70px;
-    padding: 25px;
   }
 
   .nav-links-container {
@@ -17,10 +19,11 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    gap: 40px;
 
     .nav-link {
-      padding: 10px 15px;
       cursor: pointer;
+      font-weight: bolder;
     }
   }
 }

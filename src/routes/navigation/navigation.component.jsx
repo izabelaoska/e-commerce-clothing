@@ -10,10 +10,22 @@ const Navigation = () => {
         <Link className="logo-container" to="/">
           <CrwnLogo className="logo" />
         </Link>
-        <div className="nav-links-container"></div>
-        <Link className="nav-link" to="/shop">
-          Shop
-        </Link>
+        <div className="nav-links-container">
+          <Link
+            className="nav-link"
+            to="/shop"
+            // style={{ marginTop: "30px", marginRight: "30px" }}
+          >
+            Shop
+          </Link>
+          <Link
+            className="nav-link"
+            to="/signin"
+            // style={{ marginTop: "30px", marginRight: "30px" }}
+          >
+            Sign In
+          </Link>
+        </div>
       </div>
       <Outlet />
     </Fragment>
