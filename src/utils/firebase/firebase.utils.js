@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app"
+import { initializeApp } from "firebase/app" //initializeApp creates an instance of my app based on some config
 import {
   getAuth,
   signInWithRedirect,
@@ -9,7 +9,7 @@ import {
 
 import {
   getFirestore,
-  doc,
+  doc, //documents inside our database
   setDoc,
   getDoc,
 } from "firebase/firestore"
@@ -34,12 +34,35 @@ export const auth = getAuth()
 export const signInWithGooglePopup = () =>
   signInWithPopup(auth, provider)
 
-export const db = () => getFirestore()
+export const db = getFirestore()
 
 export const createUserDocumentFromAuth = async (
+  //creating user instance in the firestore
   userAuth
 ) => {
   const userDocRef = doc(db, "users", userAuth.uid)
 
   console.log(userDocRef)
+
+  const userSnapshot = await getDoc(userDocRef) //shows if this instance exists in our database, and to access this data
+  console.log(userSnapshot)
+  console.log(userSnapshot.exists())
+
+  if (!userSnapshot.exists()) {
+    // all that happens if our user Shanpshot does not exist
+    // if it does not exist then we want to set it inside our database
+    const { displayName, email } = userAuth
+    const createdAt = new Date()
+
+    try {
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+      })
+    } catch (error) {
+      console.log("error creating new user", error.message)
+    }
+  }
+  return userDocRef
 }
