@@ -1,9 +1,8 @@
 import { initializeApp } from "firebase/app" //initializeApp creates an instance of my app based on some config
 import {
   getAuth,
-  signInWithRedirect,
+  createUserWithEmailAndPassword,
   signInWithPopup,
-  GithubAuthProvider,
   GoogleAuthProvider,
 } from "firebase/auth"
 
@@ -25,21 +24,24 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig)
 
-const provider = new GoogleAuthProvider()
-provider.setCustomParameters({
+const googleProvider = new GoogleAuthProvider() // there are many different providers - like facebook or github - that is also the reason why the
+//providers are like classes
+googleProvider.setCustomParameters({
   prompt: "select_account",
 })
 
 export const auth = getAuth()
 export const signInWithGooglePopup = () =>
-  signInWithPopup(auth, provider)
+  signInWithPopup(auth, googleProvider)
 
 export const db = getFirestore()
 
 export const createUserDocumentFromAuth = async (
   //creating user instance in the firestore
-  userAuth
+  userAuth,
+  additionalInformation = {}
 ) => {
+  if (!userAuth) return
   const userDocRef = doc(db, "users", userAuth.uid)
 
   console.log(userDocRef)
@@ -59,10 +61,23 @@ export const createUserDocumentFromAuth = async (
         displayName,
         email,
         createdAt,
+        ...additionalInformation,
       })
     } catch (error) {
       console.log("error creating new user", error.message)
     }
   }
   return userDocRef
+}
+
+export const createAuthUserWithEmailAndPassword = async (
+  email,
+  password
+) => {
+  if (!email || !password) return
+  return await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  )
 }
