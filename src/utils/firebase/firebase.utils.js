@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth"
 
 import {
@@ -46,11 +47,7 @@ export const createUserDocumentFromAuth = async (
   if (!userAuth) return
   const userDocRef = doc(db, "users", userAuth.uid)
 
-  console.log(userDocRef)
-
   const userSnapshot = await getDoc(userDocRef) //shows if this instance exists in our database, and to access this data
-  console.log(userSnapshot)
-  console.log(userSnapshot.exists())
 
   if (!userSnapshot.exists()) {
     // all that happens if our user Shanpshot does not exist
@@ -96,3 +93,6 @@ export const signInAuthUserWithEmailAndPassword = async (
 }
 
 export const signOutUser = async () => await signOut(auth)
+
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback)
