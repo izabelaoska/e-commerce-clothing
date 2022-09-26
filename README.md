@@ -1,5 +1,5 @@
 
-## E commerce website build with: 
+## E commerce website built with: 
 
 - Javascript
 - React 
